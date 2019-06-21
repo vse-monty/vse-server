@@ -13,6 +13,11 @@ io.on('connection', function(socket){
         console.log('SERVER: data recieved from app!')
         console.log(JSON.parse(data));
     });
+
+    socket.on('to.panel', function(data){
+        console.log('SERVER: data sent to panel!')
+        console.log(JSON.parse(data));
+    })
 });
 
 http.listen(9574, function(){
