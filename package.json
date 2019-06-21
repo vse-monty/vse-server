@@ -1,0 +1,11 @@
+{
+  "name": "vse-server",
+  "version": "1.0.0",
+  "main": "main.js",
+  "author": "demonty",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
