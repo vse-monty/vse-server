@@ -3,21 +3,28 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
-    res.send('<h1>express server running...</h1>');
+    res.send('<p>express server running...</p>');
 });
 
 io.on('connection', function(socket){
-    console.log('SERVER: a user connected');
-    
-    socket.on('data', function(data){
-        console.log('SERVER: data recieved from app!')
-        console.log(JSON.parse(data));
-    });
+    console.log('SERVER: a user connected: ' + socket.id);
 
-    socket.on('to.panel', function(data){
+    socket.on('get.variables', function(data){
         console.log('SERVER: data sent to panel!')
-        console.log(JSON.parse(data));
+        console.log(data);
+        socket.broadcast.emit('get.variables', data);
     })
+    
+    socket.on('give.variables', function(data){
+        console.log('SERVER: data sent to app!')
+        console.log(JSON.parse(data));
+        socket.broadcast.emit('give.variables', data);
+    })
+});
+
+io.on('disconnect', (socket) =>{
+    console.log('closing socket: ' + socket.id);
+    socket.close();
 });
 
 http.listen(9574, function(){
