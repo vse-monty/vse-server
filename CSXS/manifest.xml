@@ -34,17 +34,9 @@
 					<Menu>VSErver</Menu>
 					<Geometry>
 						<Size>
-							<Height>100</Height>
+							<Height>150</Height>
 							<Width>300</Width>
-						</Size>
-                    <!--<MinSize>
-                            <Height>550</Height>
-                            <Width>400</Width>
-                        </MinSize>
-                        <MaxSize>
-                            <Height>550</Height>
-                            <Width>400</Width>
-                        </MaxSize>-->                        
+						</Size>                    
 					</Geometry>
 				</UI>
 			</DispatchInfo>
