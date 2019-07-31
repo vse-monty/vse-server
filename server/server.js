@@ -29,6 +29,12 @@ io.on('connection', function(socket){
         console.log(JSON.parse(data));
         socket.broadcast.emit('process.order', data);
     });
+    
+    socket.on('batch', function(data){
+        console.log('SERVER: sending batch order data to panel!')
+        console.log(JSON.parse(data));
+        socket.broadcast.emit('process.batch', data);
+    });
 });
 
 io.on('disconnect', (socket) =>{
