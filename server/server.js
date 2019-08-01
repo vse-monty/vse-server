@@ -7,39 +7,61 @@ app.get('/', function(req, res){
 });
 
 var socketList = [];
+var illy_socket = null;
 
 io.on('connection', function(socket){
-    console.log('SERVER: a user connected: ' + socket.id);
+    console.log(`\nSERVER: a user connected: ${socket.id}`);
     socketList.push(socket);
+    console.log(`current socket list size => ${socketList.length}`);
+
+    socket.on('illustrator', function(){
+        console.log('\nillustrator has identified itself!');
+        console.log(`illy id: ${socket.id}`);
+        console.log(`current socket list size => ${socketList.length}`);
+        illy_socket = socket;
+        console.log('telling everyone about it!')
+        socket.broadcast.emit('illustrator.connected');
+    });
 
     socket.on('get.variables', function(data){
-        console.log('SERVER: data sent to panel!')
+        console.log('\nSERVER: data sent to panel!')
         console.log(data);
         socket.broadcast.emit('get.variables', data);
     });
     
     socket.on('give.variables', function(data){
-        console.log('SERVER: data sent to app!')
+        console.log('\nSERVER: data sent to app!')
         console.log(JSON.parse(data));
         socket.broadcast.emit('give.variables', data);
     });
     
     socket.on('order', function(data){
-        console.log('SERVER: sending order data to panel!')
+        console.log('\nSERVER: sending order data to panel!')
         console.log(JSON.parse(data));
         socket.broadcast.emit('process.order', data);
     });
     
     socket.on('batch', function(data){
-        console.log('SERVER: sending batch order data to panel!')
+        console.log('\nSERVER: sending batch order data to panel!')
         console.log(JSON.parse(data));
         socket.broadcast.emit('process.batch', data);
     });
-});
+    
+    socket.on('disconnect', function(){
 
-io.on('disconnect', (socket) =>{
-    console.log('closing socket: ' + socket.id);
-    socket.close();
+        console.log(`closing socket: ${socket.id}`);
+
+        if(illy_socket !== null && socket.id == illy_socket.id){
+
+            console.log('\nsocket being closed is illustrator\'s socket');
+            illy_socket = null;
+            socket.broadcast.emit('illustrator.disconnected');
+        }
+
+        let index = socketList.indexOf(socket);
+        socketList.splice(index, 1);
+        console.log(`\ncurrent socket list size => ${socketList.length}`);
+    });
 });
 
 http.listen(9574, function(){
