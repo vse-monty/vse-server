@@ -13,6 +13,13 @@ io.on('connection', function(socket){
     console.log(`\nSERVER: a user connected: ${socket.id}`);
     socketList.push(socket);
     console.log(`current socket list size => ${socketList.length}`);
+    
+    if(illy_socket){
+
+        setTimeout(function () {
+            socket.emit('illustrator.connected')
+        }, 2000);
+    }
 
     socket.on('illustrator', function(){
         console.log('\nillustrator has identified itself!');
@@ -45,6 +52,18 @@ io.on('connection', function(socket){
         console.log('\nSERVER: sending batch order data to panel!')
         console.log(JSON.parse(data));
         socket.broadcast.emit('process.batch', data);
+    });
+
+    socket.on('illustrator.settings', function(data){
+        console.log('\nSERVER: sending app settings to panel');
+        console.log(data);
+        socket.broadcast.emit('settings', data);
+    });
+
+    socket.on('order.completed', function(data){
+        console.log('\nSERVER: sending completed to app');
+        console.log(data);
+        socket.broadcast.emit('completed', data);
     });
     
     socket.on('disconnect', function(){

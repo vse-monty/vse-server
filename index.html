@@ -17,8 +17,10 @@
     <script>
         'use strict';
 
+        //this
         var CSInterface = new CSInterface();
-
+        
+        //spins up the node js server
         var localServer = cep_node.require(__dirname + '/server/server.js')();
         console.log(localServer);
     </script>
