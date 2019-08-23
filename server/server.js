@@ -42,22 +42,10 @@ io.on('connection', function(socket){
         socket.broadcast.emit('give.variables', data);
     });
     
-    socket.on('order', function(data){
-        console.log('\nSERVER: sending order data to panel!')
+    socket.on('give.orders', function(data){
+        console.log('\nSERVER: sending all order data to panel!')
         console.log(JSON.parse(data));
-        socket.broadcast.emit('process.order', data);
-    });
-    
-    socket.on('batch', function(data){
-        console.log('\nSERVER: sending batch order data to panel!')
-        console.log(JSON.parse(data));
-        socket.broadcast.emit('process.batch', data);
-    });
-
-    socket.on('illustrator.settings', function(data){
-        console.log('\nSERVER: sending app settings to panel');
-        console.log(data);
-        socket.broadcast.emit('settings', data);
+        socket.broadcast.emit('process', data);
     });
 
     socket.on('order.completed', function(data){
@@ -65,7 +53,13 @@ io.on('connection', function(socket){
         console.log(data);
         socket.broadcast.emit('completed', data);
     });
-    
+
+    socket.on('illustrator.settings', function (data) {
+        console.log('\nSERVER: sending app settings to panel');
+        console.log(data);
+        socket.broadcast.emit('settings', data);
+    });
+
     socket.on('disconnect', function(){
 
         console.log(`closing socket: ${socket.id}`);
