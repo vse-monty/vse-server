@@ -50,13 +50,13 @@ io.on('connection', function(socket){
 
     socket.on('order.completed', function(data){
         console.log('\nSERVER: sending completed to app');
-        console.log(data);
+        console.log(JSON.parse(data));
         socket.broadcast.emit('completed', data);
     });
 
     socket.on('illustrator.settings', function (data) {
         console.log('\nSERVER: sending app settings to panel');
-        console.log(data);
+        console.log(JSON.parse(data));
         socket.broadcast.emit('settings', data);
     });
 
